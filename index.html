@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ghost</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <style>
+        #quadro {
+            width: 300px;
+            height: 169px;
+            background-image: url('assets/images/background.png');
+        }
+
+        #ghostred {
+            position: absolute;
+            top: 116px;
+            left: 50px;
+            width: 40px;
+            height: 25px;
+            background-image: url('assets/images/sprite-ghostred.png');
+        }
+
+        .inicial { background-position: 0px 0px; }
+        .direita { background-position: -40px 0px; }
+        .pula { background-position: -240px -3px; }
+        </style>
+
+        <script>
+            var leftMapa = 0;
+            function mapa() {
+                console.log('mapa: ', leftMapa);
+                $('#quadro').css('background-position', leftMapa + 'px 0px');
+            }
+
+            function addInicial() { $('#ghostred').addClass('inicial'); }
+            function removeInicial() { $('#ghostred').removeClass('inicial'); }
+            
+            function andarDireita() {
+                leftMapa -= 20;
+                removeInicial();
+                $('#ghostred').addClass('direita');
+
+                setTimeout(function() {
+                    $('#ghostred').removeClass('direita');
+                    addInicial();
+                }, 200);
+
+                mapa();
+            }
+
+            function pula() {
+                removeInicial()
+                $('#ghostred').addClass('pula');
+
+                setTimeout(function() {
+                    $('#ghostred').removeClass('pula');
+                    addInicial();
+                }, 300);
+            }
+
+
+            document.onkeydown = function(e) {
+    switch(e.which) {
+        case 37: // left
+            console.log('esquerda');
+        break;
+
+        case 38: // up
+            pula();
+            console.log('cima');
+        break;
+
+        case 39: // right
+            andarDireita();
+            console.log('direita');
+        break;
+
+        case 40: // down
+        console.log('baixo');
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+};
+        </script>
+    </head>
+    <body>
+        
+        <div id="quadro">
+            <div id="ghostred" class="inicial"></div>
+        </div>
+    </body>
+</html>
